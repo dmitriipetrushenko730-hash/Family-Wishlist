@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Family Wishlist</title>
+ <link rel="stylesheet" href="style.css">
+ <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg viewBox='0 0 100 100' xmlns='http://w3.org'><circle cx='50' cy='50' r='46' fill='%23181818' stroke='%23333' stroke-width='2'/><path d='M25 42 h50 v10 h-50 z' fill='none' stroke='%23e0e0e0' stroke-width='6'/><path d='M28 52 h44 v24 h-44 z' fill='none' stroke='%23e0e0e0' stroke-width='6'/><line x1='50' y1='42' x2='50' y2='76' stroke='%23bb86fc' stroke-width='8'/><path d='M50 42 C35 32, 30 42, 50 42' fill='none' stroke='%23bb86fc' stroke-width='6'/><path d='M50 42 C65 32, 70 42, 50 42' fill='none' stroke='%23bb86fc' stroke-width='6'/></svg>">
+ <link rel="manifest" href="manifest.json">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-title" content="Wishlist">
+ <link rel="apple-touch-icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg viewBox='0 0 100 100' xmlns='http://w3.org'><circle cx='50' cy='50' r='46' fill='%23181818' stroke='%23333' stroke-width='2'/><path d='M25 42 h50 v10 h-50 z' fill='none' stroke='%23e0e0e0' stroke-width='6'/><path d='M28 52 h44 v24 h-44 z' fill='none' stroke='%23e0e0e0' stroke-width='6'/><line x1='50' y1='42' x2='50' y2='76' stroke='%23bb86fc' stroke-width='8'/><path d='M50 42 C35 32, 30 42, 50 42' fill='none' stroke='%23bb86fc' stroke-width='6'/><path d='M50 42 C65 32, 70 42, 50 42' fill='none' stroke='%23bb86fc' stroke-width='6'/></svg>">
+ <!-- Официальная библиотека Supabase -->
+ <script src="https://jsdelivr.net"></script>
+</head>
+<body>
+<div class="container">
+ <div id="screen-main" class="screen active">
+  <h1 id="main-title">Кто ты?</h1>
+  <div id="users-buttons-container"></div>
+  <button id="main-clear-btn" class="danger" style="margin-top: 25px;" onclick="scriptPromptClearAllData()">⚠️ Очистить все данные</button>
+ </div>
+ <div id="screen-menu" class="screen">
+  <h1 id="menu-title"></h1>
+  <button id="menu-edit-btn" onclick="scriptNavigateToEdit()">✏️ Редактировать вишлист</button>
+  <button id="menu-view-btn" onclick="scriptNavigateToViewSelect()">👁️ Просмотр вишлистов</button>
+  <button id="menu-share-btn" onclick="scriptNavigateToShareSelect()">✈️ Поделиться пожеланием</button>
+  <button id="menu-logout-btn" class="secondary" onclick="scriptLogoutUser()">👤 Сменить пользователя</button>
+ </div>
+ <div id="screen-edit" class="screen">
+  <div class="title-with-trash">
+   <h2 id="edit-title"></h2>
+   <button id="global-trash-btn" class="header-trash-btn" onclick="scriptClearUserWishlist()" title="Очистить вишлист">🗑️</button>
+  </div>
+  <input type="hidden" id="edit-item-id">
+  <label id="label-name">Название:</label>
+  <input type="text" id="input-wish-name">
+  <label id="label-price">Цена:</label>
+  <input type="text" id="input-wish-price" oninput="scriptFilterPrice(this)">
+  <label id="label-link">Ссылка:</label>
+  <input type="url" id="input-wish-link">
+  <button id="btn-save-wish" onclick="scriptSaveWishItem()">➕ Добавить в список</button>
+  <button id="btn-cancel-edit" class="secondary" style="display:none;" onclick="scriptCancelEditMode()">Отмена</button>
+  <div class="wish-list" id="my-wish-list"></div>
+  <button class="btn-back-menu secondary" style="margin-top: 15px;" onclick="scriptSwitchScreen('screen-menu')">Назад</button>
+ </div>
+ <div id="screen-view-select" class="screen">
+  <h2 id="view-select-title">Чей список смотрим?</h2>
+  <div id="view-users-container"></div>
+  <button class="btn-back-menu secondary" onclick="scriptSwitchScreen('screen-menu')">Назад</button>
+ </div>
+ <div id="screen-view-items" class="screen">
+  <h2>👁️ <span id="view-prefix">Вишлист</span>: <span id="view-items-title"></span></h2>
+  <div class="wish-list" id="other-wish-list"></div>
+  <button id="btn-back-select" class="secondary" onclick="scriptSwitchScreen('screen-view-select')">Назад к выбору</button>
+ </div>
+ <div id="screen-share-select" class="screen">
+  <h2 id="share-select-title">Кому отправить?</h2>
+  <div id="share-users-container"></div>
+  <button class="btn-back-menu secondary" onclick="scriptSwitchScreen('screen-menu')">Назад</button>
+ </div>
+ <div id="screen-share-items" class="screen">
+  <h2>✈️ <span id="share-items-title">Отправка</span></h2>
+  <div class="wish-list" id="share-wish-list"></div>
+  <button class="secondary" style="margin-top: 15px;" onclick="scriptSwitchScreen('screen-share-select')">Назад</button>
+ </div>
+ <div class="lang-container" id="global-lang-box">
+  <div class="lang-current" onclick="scriptToggleLangMenu()"><span id="current-lang-flag">🇷🇺</span> <span id="current-lang-text">Языки</span> <span class="lang-arrow">▼</span></div>
+  <div class="lang-dropdown" id="lang-dropdown-list">
+   <div class="lang-option" onclick="scriptSelectLang('ru')"><span>🇷🇺</span> Русский</div>
+   <div class="lang-option" onclick="scriptSelectLang('en')"><span>🇺🇸</span> Английский</div>
+   <div class="lang-option" onclick="scriptSelectLang('de')"><span>🇩🇪</span> Немецкий</div>
+  </div>
+ </div>
+</div>
+<!-- Фикс: Теперь загружается только ОДИН файл -->
+<script src="app.js"></script>
+</body>
+</html>
