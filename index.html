@@ -4,14 +4,52 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Family Wishlist</title>
- <link rel="stylesheet" href="style.css">
+ <style>
+  :root { --bg-color: #121212; --card-bg: #1e1e1e; --text-color: #e0e0e0; --accent-color: #bb86fc; --accent-dim: #3700b3; --danger-color: #cf6679; }
+  body.theme-user-Валерия { --bg-color: #1a1126; --card-bg: #241933; --accent-color: #a87ff3; --accent-dim: #4a2d7a; }
+  body.theme-user-Катя { --bg-color: #26121a; --card-bg: #331924; --accent-color: #f37faf; --accent-dim: #7a2d4b; }
+  body.theme-user-Елена { --bg-color: #261b12; --card-bg: #332419; --accent-color: #f3b17f; --accent-dim: #7a4b2d; }
+  body.theme-user-Сергей { --bg-color: #121b26; --card-bg: #192433; --accent-color: #7fbbf3; --accent-dim: #2d4b7a; }
+  body.theme-user-Дима { --bg-color: #261212; --card-bg: #331919; --accent-color: #f37f7f; --accent-dim: #7a2d2d; }
+  * { box-sizing: border-box; font-family: sans-serif; margin: 0; padding: 0; }
+  body { background-color: var(--bg-color); color: var(--text-color); padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+  .container { background-color: var(--card-bg); width: 100%; max-width: 500px; padding: 25px 25px 60px 25px; border-radius: 16px; position: relative; overflow: hidden; word-break: break-word; }
+  .title-with-trash { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 20px; }
+  h1, h2 { text-align: center; overflow-wrap: break-word; flex-grow: 1; }
+  .title-with-trash h2 { text-align: left; margin-bottom: 0; }
+  button { width: 100%; padding: 14px; margin-bottom: 12px; background-color: var(--accent-dim); color: #fff; border: 1px solid var(--accent-color); border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; justify-content: center; white-space: normal; }
+  button.secondary { background-color: #2c2c2c; border-color: #444; }
+  button.danger { background-color: #441919; border-color: var(--danger-color); color: var(--danger-color); }
+  .header-trash-btn { width: auto; margin-bottom: 0; background: none; border: none; color: var(--danger-color); font-size: 1.6rem; padding: 5px 10px; cursor: pointer; flex-shrink: 0; }
+  .user-btn { background-color: #282828; border: 1px solid #444; text-align: left; padding: 16px; }
+  input { width: 100%; padding: 12px; background: #2d2d2d; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 1rem; margin-bottom: 15px; }
+  .wish-list { margin-top: 15px; max-height: 260px; overflow-y: auto; }
+  .wish-item { background: rgba(255,255,255,0.04); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--accent-color); gap: 10px; }
+  .wish-info { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .wish-title { font-weight: bold; word-break: break-word; overflow-wrap: break-word; }
+  .wish-price { color: #ffb74d; }
+  .wish-link { color: #64b5f6; text-decoration: none; word-break: break-all; }
+  .wish-giver { color: #81c784; font-style: italic; }
+  .wish-actions { display: flex; gap: 14px; align-items: center; flex-shrink: 0; }
+  .action-icon { cursor: pointer; font-size: 1.3rem; }
+  .checkbox-container { width: 26px; height: 26px; background: #333; border: 2px solid #555; border-radius: 6px; position: relative; cursor: pointer; flex-shrink: 0; }
+  .checkbox-container.checked { background: #4caf50; border-color: #4caf50; }
+  .checkbox-container.checked::after { content: '✓'; position: absolute; color: #fff; font-size: 18px; top: -4px; left: 4px; }
+  .completed { text-decoration: line-through; opacity: 0.4; }
+  .screen { display: none; width: 100%; }
+  .screen.active { display: block; }
+  .highlight-wish { animation: flashBorder 1.5s infinite ease-in-out; border: 2px solid var(--accent-color) !important; background: rgba(255,255,255,0.1) !important; box-shadow: 0 0 15px var(--accent-color); }
+  @keyframes flashBorder { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  .lang-container { position: absolute; bottom: 15px; left: 25px; z-index: 1000; font-size: 0.9rem; user-select: none; display: none; }
+  .lang-container.visible { display: block; }
+  .lang-current { display: flex; align-items: center; gap: 6px; background: #2a2a2a; padding: 6px 12px; border-radius: 6px; border: 1px solid #444; cursor: pointer; color: #ccc; }
+  .lang-arrow { font-size: 0.7rem; color: #888; }
+  .lang-dropdown { display: none; position: absolute; bottom: 35px; left: 0; background: #222; border: 1px solid #444; border-radius: 6px; width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+  .lang-dropdown.open { display: block; }
+  .lang-option { padding: 8px 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+  .lang-option:hover { background: #333; color: #fff; }
+ </style>
  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg viewBox='0 0 100 100' xmlns='http://w3.org'><circle cx='50' cy='50' r='46' fill='%23181818' stroke='%23333' stroke-width='2'/><path d='M25 42 h50 v10 h-50 z' fill='none' stroke='%23e0e0e0' stroke-width='6'/><path d='M28 52 h44 v24 h-44 z' fill='none' stroke='%23e0e0e0' stroke-width='6'/><line x1='50' y1='42' x2='50' y2='76' stroke='%23bb86fc' stroke-width='8'/><path d='M50 42 C35 32, 30 42, 50 42' fill='none' stroke='%23bb86fc' stroke-width='6'/><path d='M50 42 C65 32, 70 42, 50 42' fill='none' stroke='%23bb86fc' stroke-width='6'/></svg>">
- <link rel="manifest" href="manifest.json">
- <meta name="apple-mobile-web-app-capable" content="yes">
- <meta name="apple-mobile-web-app-title" content="Wishlist">
- <link rel="apple-touch-icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg viewBox='0 0 100 100' xmlns='http://w3.org'><circle cx='50' cy='50' r='46' fill='%23181818' stroke='%23333' stroke-width='2'/><path d='M25 42 h50 v10 h-50 z' fill='none' stroke='%23e0e0e0' stroke-width='6'/><path d='M28 52 h44 v24 h-44 z' fill='none' stroke='%23e0e0e0' stroke-width='6'/><line x1='50' y1='42' x2='50' y2='76' stroke='%23bb86fc' stroke-width='8'/><path d='M50 42 C35 32, 30 42, 50 42' fill='none' stroke='%23bb86fc' stroke-width='6'/><path d='M50 42 C65 32, 70 42, 50 42' fill='none' stroke='%23bb86fc' stroke-width='6'/></svg>">
- <!-- Официальная библиотека Supabase -->
- <script src="https://jsdelivr.net"></script>
 </head>
 <body>
 <div class="container">
@@ -30,7 +68,7 @@
  <div id="screen-edit" class="screen">
   <div class="title-with-trash">
    <h2 id="edit-title"></h2>
-   <button id="global-trash-btn" class="header-trash-btn" onclick="scriptClearUserWishlist()" title="Очистить вишлист">🗑️</button>
+   <button id="global-trash-btn" class="header-trash-btn" onclick="scriptClearUserWishlist()" title="Очистить вишлист ">🗑️</button>
   </div>
   <input type="hidden" id="edit-item-id">
   <label id="label-name">Название:</label>
@@ -62,7 +100,7 @@
  <div id="screen-share-items" class="screen">
   <h2>✈️ <span id="share-items-title">Отправка</span></h2>
   <div class="wish-list" id="share-wish-list"></div>
-  <button class="secondary" style="margin-top: 15px;" onclick="scriptSwitchScreen('screen-share-select')">Назад</button>
+  <button class="secondary" style="margin-top: 15px;" onclick="scriptSwitchScreen('share-select')">Назад</button>
  </div>
  <div class="lang-container" id="global-lang-box">
   <div class="lang-current" onclick="scriptToggleLangMenu()"><span id="current-lang-flag">🇷🇺</span> <span id="current-lang-text">Языки</span> <span class="lang-arrow">▼</span></div>
@@ -73,7 +111,11 @@
   </div>
  </div>
 </div>
-<!-- Фикс: Теперь загружается только ОДИН файл -->
-<script src="app.js"></script>
+<!-- Изолированное модульное подключение без единой синтаксической ошибки -->
+<script src="config.js"></script>
+<script src="translations.js"></script>
+<script src="network.js"></script>
+<script src="features.js"></script>
+<script src="core.js"></script>
 </body>
 </html>
