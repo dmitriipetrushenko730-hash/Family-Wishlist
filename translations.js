@@ -8,7 +8,7 @@ const TRANSLATIONS = {
   emptyText: "Пусто", textGiver: "🎁 Дарит: ", textGiverYou: "ТЫ", msgNameQuery: "Имя?",
   msgDeleteQuery: "Удалить?", msgClearQuery: "Очистить твой список?", msgMasterPass: "Пароль:",
   msgWipeAll: "Стереть ВСЁ?", msgWipeSuccess: "Локальное хранилище очищено.", msgWipeFail: "Мимо!",
-  textCurrency: "руб.", textNoPrice: "Цена не указана", btnWishText: "Вишлист: ", titleEditBox: "Вишлист: ",
+  textCurrency: "₽", textNoPrice: "Цена не указана", btnWishText: "Вишлист: ", titleEditBox: "Вишлист: ",
   welcome: "Привет", shareSelectTitle: "Кому отправить?", shareItemsTitle: "Отправка"
  },
  en: {
@@ -20,7 +20,7 @@ const TRANSLATIONS = {
   emptyText: "Empty", textGiver: "🎁 Gives: ", textGiverYou: "YOU", msgNameQuery: "Name?",
   msgDeleteQuery: "Delete?", msgClearQuery: "Clear your list?", msgMasterPass: "Password:",
   msgWipeAll: "Wipe EVERYTHING?", msgWipeSuccess: "All storage wiped clean.", msgWipeFail: "Wrong password!",
-  textCurrency: "USD", textNoPrice: "No price specified", btnWishText: "Wishlist: ", titleEditBox: "Wishlist: ",
+  textCurrency: "₽", textNoPrice: "No price specified", btnWishText: "Wishlist: ", titleEditBox: "Wishlist: ",
   welcome: "Hello", shareSelectTitle: "Whose to send?", shareItemsTitle: "Sending"
  },
  de: {
@@ -32,7 +32,7 @@ const TRANSLATIONS = {
   emptyText: "Leer", textGiver: "🎁 Schenkt: ", textGiverYou: "DU", msgNameQuery: "Name?",
   msgDeleteQuery: "Löschen?", msgClearQuery: "Deine Liste löschen?", msgMasterPass: "Passwort:",
   msgWipeAll: "ALLES löschen?", msgWipeSuccess: "Speicher bereinigt.", msgWipeFail: "Falsches Passwort!",
-  textCurrency: "EUR", textNoPrice: "Kein Preis angegeben", btnWishText: "Wunschliste: ", titleEditBox: "Wunschliste: ",
+  textCurrency: "₽", textNoPrice: "Kein Preis angegeben", btnWishText: "Wunschliste: ", titleEditBox: "Wunschliste: ",
   welcome: "Hallo", shareSelectTitle: "An wen senden?", shareItemsTitle: "Senden"
  }
 };
